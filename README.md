@@ -5,6 +5,7 @@ This is a simple RESTFUL API for Chat application
 ## Requirements
 - python3.10
 - Docker (optional)
+- docker-compose version 1.29.2
 
 ## Installation
 
@@ -17,14 +18,14 @@ To run the backend locally:
   python main.py
 ```
 
-To run the backend in docker:
+To run the backend using docker-compose:
 - execute these commands: 
 
 ```bash
   cd granulate
-  docker build . -f docker/base/Dockerfile -t chat-app:base
+  docker build . -f docker/Dockerfile -t chat-app:base
   docker build . -f docker/app/Dockerfile -t chat-app
-  docker run -p 1337:1337 chat-app
+  docker-compose -f docker/docker-compose.debug.yml up -d
 ```
 
 
@@ -69,7 +70,6 @@ To run the client in docker:
 
 ```bash
   cd granulate
-  docker build . -f docker/base/Dockerfile -t chat-app:base
   docker build . -f docker/client/Dockerfile -t chat-app:client
   docker run --network="host" chat-app:client --username david
 ```

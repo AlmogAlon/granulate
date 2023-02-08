@@ -3,3 +3,7 @@ setuptools==63.2.0
 bottle
 black==22.3.0
 requests
+python-dotenv
+sqlalchemy
+mysql-python
+mysqlclient

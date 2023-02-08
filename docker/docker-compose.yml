@@ -1,0 +1,24 @@
+version: '3.4'
+services:
+  mysql-db:
+    image: mysql:5.7.38
+    platform: linux/x86_64
+    volumes:
+      - "../mysql_db:/docker-entrypoint-initdb.d"
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - 3306:3306
+    networks:
+      - app-network
+
+  chat-app:
+    image: chat-app:latest
+    ports:
+      - 1337:1337
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: app-network

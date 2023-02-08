@@ -6,51 +6,16 @@ import typing
 from typing import Dict
 
 import abort
+from common.session import db
+from mysql_db.models.message import Message
+from mysql_db.models.user import User
 from router import engine
 from bottle import request
 from dataclasses import dataclass
 
-from utils.utils import pluck
+from common.utils import pluck
 
 app = engine.create_app()
-
-
-@dataclass
-class Message:
-    message: str
-    username: str
-
-    @staticmethod
-    def from_dict(obj: Dict) -> Message:
-        allowed_keys = [*typing.get_type_hints(Message).keys()]
-        plucked = pluck(obj, allowed_keys)
-        return Message(**plucked)
-
-    def to_dict(self) -> Dict:
-        return dataclasses.asdict(self)
-
-
-@dataclass
-class Chat:
-    messages: Dict[str, typing.List[Message]] = None
-
-    def __post_init__(self):
-        self.messages = {}
-
-    def add_message(self, message: Message):
-        if message.username not in self.messages.keys():
-            self.messages[message.username] = [message]
-        else:
-            self.messages[message.username].append(message)
-
-    def get_messages(self, username: str = None) -> typing.List[Dict]:
-        if username:
-            return [m.to_dict() for m in self.messages.get(username, [])]
-        values = self.messages.values()
-        return [message.to_dict() for messages in values for message in messages]
-
-
-chat = Chat()
 
 
 @app.route("/", method="POST")
@@ -61,12 +26,31 @@ def send_message():
     if "message" not in request_json:
         abort.soft(code="MISSING_MESSAGE", reason="Missing message in request.")
 
-    chat_message = Message.from_dict(request_json)
-    chat.add_message(chat_message)
+    session = db()
+    user_name = request_json["username"]
+    user = session.query(User).filter_by(name=user_name).first()
+    if not user:
+        abort.soft(code="USER_NOT_EXIST", reason=f"User name {user_name} does not exist")
+
+    message = Message(
+        to_uid=user.id,
+        uid=user.id,
+        message=request_json["message"],
+    )
+    session.add(message)
+    session.commit()
 
 
 @app.route("/")
 def get_message():
-    user = request.query.get("user", None)
-    messages = chat.get_messages(username=user)
-    return {"messages": messages}
+    user_name = request.query.get("user", None)
+    session = db()
+    filters = {}
+    if user_name:
+        user = session.query(User).filter_by(name=user_name).first()
+        if not user:
+            abort.soft(code="USER_NOT_EXIST", reason=f"User name {user_name} does not exist")
+        filters = {"to_uid": user.id}
+
+    messages = Message.get_by(db=session, **filters)
+    return {"messages": [message.view for message in messages]}
