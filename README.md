@@ -4,10 +4,11 @@ This is a simple RESTFUL API for Chat application
 
 ## Requirements
 - python3.10
+- Docker (optional)
 
 ## Installation
 
-To run the backend:
+To run the backend locally:
 
 - execute these commands: 
 
@@ -15,6 +16,16 @@ To run the backend:
   cd granulate
   python main.py
 ```
+
+To run the backend in docker:
+- execute these commands: 
+
+```bash
+  cd granulate
+  docker docker build . -f docker/Dockerfile -t chat-app
+  docker run -p 1337:1337 chat-app
+```
+
 
 ## API Reference
 
