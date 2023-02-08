@@ -5,6 +5,8 @@ services:
     platform: linux/x86_64
     volumes:
       - "../mysql_db:/docker-entrypoint-initdb.d"
+      - mysql-data:/var/lib/mysql
+
     environment:
       MYSQL_ROOT_PASSWORD: "password"
     ports:
@@ -18,7 +20,12 @@ services:
       - 1337:1337
     networks:
       - app-network
+    environment:
+     - DB_HOST=mysql-db
 
 networks:
   app-network:
     name: app-network
+
+volumes:
+  mysql-data:

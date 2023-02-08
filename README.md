@@ -25,7 +25,7 @@ To run the backend using docker-compose:
   cd granulate
   docker build . -f docker/Dockerfile -t chat-app:base
   docker build . -f docker/app/Dockerfile -t chat-app
-  docker-compose -f docker/docker-compose.debug.yml up -d
+  docker-compose -f docker/docker-compose.yml up -d
 ```
 
 
