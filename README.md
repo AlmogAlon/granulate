@@ -22,7 +22,8 @@ To run the backend in docker:
 
 ```bash
   cd granulate
-  docker docker build . -f docker/Dockerfile -t chat-app
+  docker build . -f docker/base/Dockerfile -t chat-app:base
+  docker build . -f docker/app/Dockerfile -t chat-app
   docker run -p 1337:1337 chat-app
 ```
 
@@ -57,9 +58,18 @@ To run the backend in docker:
 ```bash
   cd granulate
   python client.py --username=david --message
-
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `username` | `Str` | **Required** fetch messages for the given user|
 | `message` |  | **Optional** prompt message input |
+
+To run the client in docker:
+- execute these commands: 
+
+```bash
+  cd granulate
+  docker build . -f docker/base/Dockerfile -t chat-app:base
+  docker build . -f docker/client/Dockerfile -t chat-app:client
+  docker run --network="host" chat-app:client --username david
+```
