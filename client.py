@@ -5,10 +5,13 @@ from typing import Optional, Dict
 
 import requests
 
+from common.settings import project_settings
 from routes.chat import Message
-from utils import utils
+from common import utils
 
-CHAT_API = "http://127.0.0.1:1337/chat"
+
+server = project_settings().server
+CHAT_API = f"http://{server.addr}:{server.port}/chat"
 
 
 def send_message(message: str, username: str):
