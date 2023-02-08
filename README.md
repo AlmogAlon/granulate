@@ -51,3 +51,15 @@ To run the backend in docker:
 | `username` | `Str` | **Required** |
 | `message` | `Str` | **Required** |
 
+
+## Client usage
+
+```bash
+  cd granulate
+  python client.py --username=david --message
+
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `username` | `Str` | **Required** fetch messages for the given user|
+| `message` |  | **Optional** prompt message input |
