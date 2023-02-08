@@ -45,7 +45,7 @@ class Chat:
 
     def get_messages(self, username: str = None) -> typing.List[Dict]:
         if username:
-            return [m.to_dict() for m in self.messages[username]]
+            return [m.to_dict() for m in self.messages.get(username, [])]
         values = self.messages.values()
         return [message.to_dict() for messages in values for message in messages]
 
@@ -67,5 +67,6 @@ def send_message():
 
 @app.route("/")
 def get_message():
-    messages = chat.get_messages()
+    user = request.query.get("user", None)
+    messages = chat.get_messages(username=user)
     return {"messages": messages}
