@@ -3,7 +3,7 @@ import logging
 from common import utils
 from common.settings import project_settings
 from router import engine
-from routes.chat import app as chat_app
+from routes.chat.chat import app as chat_app
 
 app = engine.create_app()
 

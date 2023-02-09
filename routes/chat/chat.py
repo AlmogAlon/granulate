@@ -7,8 +7,10 @@ from mysql_db.models.room import Room
 from mysql_db.models.user import User
 from router import engine
 from bottle import request
+from routes.chat.room import app as room_app
 
 app = engine.create_app()
+app.mount("/room", room_app)
 
 
 @app.route("/", method="POST")

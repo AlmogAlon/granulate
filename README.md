@@ -45,13 +45,21 @@ To run the backend using docker-compose:
 --data-raw '{
     "username": "test",
     "message": "test message"
+    "room_name": "test_room"
 }'
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `username` | `Str` | **Required** |
-| `message` | `Str` | **Required** |
+| Parameter   | Type     | Description  |
+|:------------| :------- |:-------------|
+| `username`  | `Str` | **Required** |
+| `message`   | `Str` | **Required** |
+| `room_name` | `Str` | **Optional** |
+
+#### Get rooms
+
+```bash
+  curl --location --request GET '127.0.0.1:1337/chat/room/<OPTIONAL_ID>'
+```
 
 
 ## Client usage
@@ -60,10 +68,11 @@ To run the backend using docker-compose:
   cd granulate
   python client.py --username=david --message
 ```
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `username` | `Str` | **Required** fetch messages for the given user|
-| `message` |  | **Optional** prompt message input |
+| Parameter  | Type     | Description                                    |
+|:-----------| :------- |:-----------------------------------------------|
+| `username` | `Str` | **Required** fetch messages for the given user |
+| `message`  |  | **Optional** prompt message input              |
+| `room`     |  | **Optional** room name                         |
 
 To run the client in docker:
 - execute these commands: 
