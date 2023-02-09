@@ -1,6 +1,7 @@
 # Backend Assignment
 
-This is a simple RESTFUL API for Chat application
+This is a simple RESTFUL API for Chat application. 
+Backend server is written in Python with SQLAlchemy as the DB ORM
 
 ## Requirements
 - python3.10
