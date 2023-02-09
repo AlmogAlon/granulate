@@ -30,12 +30,15 @@ CREATE TABLE `message` (
   `uid` int(11) NOT NULL,
   `to_uid` int(11) NOT NULL,
   `message` varchar(255) NOT NULL,
+  `room_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `to_uid` (`to_uid`),
+  KEY `room_id` (`room_id`),
   CONSTRAINT `message_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `user` (`id`),
-  CONSTRAINT `message_ibfk_3` FOREIGN KEY (`to_uid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `message_ibfk_3` FOREIGN KEY (`to_uid`) REFERENCES `user` (`id`),
+  CONSTRAINT `message_ibfk_4` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,6 +48,57 @@ CREATE TABLE `message` (
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `room`
+--
+
+DROP TABLE IF EXISTS `room`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `room`
+--
+
+LOCK TABLES `room` WRITE;
+/*!40000 ALTER TABLE `room` DISABLE KEYS */;
+/*!40000 ALTER TABLE `room` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `room_user`
+--
+
+DROP TABLE IF EXISTS `room_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `room_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `room_id` (`room_id`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `room_user_ibfk_4` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`),
+  CONSTRAINT `room_user_ibfk_5` FOREIGN KEY (`uid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `room_user`
+--
+
+LOCK TABLES `room_user` WRITE;
+/*!40000 ALTER TABLE `room_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `room_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -80,4 +134,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-08 20:05:58
+-- Dump completed on 2023-02-08 23:39:12

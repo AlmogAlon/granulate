@@ -4,9 +4,7 @@ from typing import List, Type
 
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy.orm import Session, relationship
-
 from common.session import Base
-from mysql_db.models.user import User
 
 
 class Message(Base):
@@ -18,8 +16,10 @@ class Message(Base):
     uid = Column(Integer, ForeignKey("user.id"))
     to_uid = Column(Integer, ForeignKey("user.id"))
     message = Column(String)
-    user = relationship('User', foreign_keys=[uid])
-    to_user = relationship('User', foreign_keys=[to_uid])
+    user = relationship('User', foreign_keys=[uid], back_populates='messages')
+    to_user = relationship('User', foreign_keys=[to_uid], back_populates='messages')
+    room_id = Column(Integer, ForeignKey("room.id"))
+    room = relationship('Room', foreign_keys=[room_id], back_populates='messages')
 
     @staticmethod
     def get_by(db: Session, **kwargs) -> List[Type[Message]]:
