@@ -8,9 +8,15 @@ load_dotenv()
 
 
 @dataclass
-class Server(object):
-    addr: str = os.getenv("SERVER_HOST")
-    port: int = int(os.getenv("SERVER_PORT"))
+class WebSocket(object):
+    addr: str = os.getenv("WEBSOCKET_HOST")
+    port: int = int(os.getenv("WEBSOCKET_PORT"))
+
+
+@dataclass
+class Notification(object):
+    addr: str = os.getenv("NOTIFICATION_HOST")
+    port: int = int(os.getenv("NOTIFICATION_PORT"))
 
 
 @dataclass
@@ -24,7 +30,8 @@ class Database(object):
 
 @dataclass
 class Settings:
-    server: Server = Server()
+    notification: Notification = Notification()
+    websocket: WebSocket = WebSocket()
     database: Database = Database()
 
 

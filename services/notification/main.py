@@ -1,16 +1,15 @@
 import logging
 
-from common import utils
+from common import utils, engine
 from common.settings import project_settings
-from router import engine
-from routes.chat.chat import app as chat_app
+from routes.route import app as route_app
 
 app = engine.create_app()
 
-app.mount("/chat", chat_app)
+app.mount("/api", route_app)
 
 if __name__ == "__main__":
-    settings = project_settings().server
+    settings = project_settings().notification
     port = settings.port
     utils.initialize_logging_to_stdout()
 

@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Type, Dict, TypeVar
+from typing import List, Dict, TypeVar
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship, Session
 from common.session import Base
-from mysql_db.models.user import Message
 
 
 class RoomUser(Base):
