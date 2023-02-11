@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+from datetime import datetime
 
 from bottle import request
 
@@ -23,16 +24,16 @@ def send_notification():
 
     body = json.loads(req_body)
     message_content = body.get("message")
-    user_name = body.get("user_name")
+    user_id = body.get("user_id")
     room_name = body.get("room_name")
 
-    if not user_name:
-        abort.soft(code="MISSING_USERNAME", reason="Missing username in request.")
+    if not user_id:
+        abort.soft(code="MISSING_USER", reason="Missing user_id in request.")
     if not message_content:
         abort.soft(code="MISSING_MESSAGE", reason="Missing message in request.")
 
     session = db()
-    user = User.get_by(db=session, name=user_name)
+    user = User.get_by(db=session, id=user_id)
     if not user:
         abort.soft(code="USER_NOT_FOUND", reason="User not found.")
 
@@ -56,7 +57,7 @@ def send_notification():
     session.commit()
 
     try:
-        send(NotificationMessage(message_content, user.id))
+        send(NotificationMessage(message.id, message_content, user.id))
     except Exception as e:
         logging.error(f"send_notification(): failed sending notification: {e}")
 
@@ -67,9 +68,22 @@ def send_notification():
 
 @app.route("/read", method="POST")
 def read_message():
-    return {}
+    # TODO: implement
+    abort.soft(code="NOT_IMPLEMENTED", reason="Not implemented yet.")
 
 
-@app.route("/sent", method="POST")
+@app.route("/notification/sent", method="POST")
 def read_message():
+    message_id = request.json.get("message_id")
+    sent_time = request.json.get("sent_time")
+    session = db()
+    msg = Message.get_by(db=session, id=message_id)
+    if not msg:
+        abort.soft(code="MESSAGE_NOT_FOUND", reason="Message not found.")
+    if msg.sent:
+        abort.soft(code="MESSAGE_ALREADY_SENT", reason="Message already sent.")
+
+    msg.sent = datetime.fromisoformat(sent_time)
+    session.commit()
+
     return {}

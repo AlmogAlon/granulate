@@ -8,6 +8,7 @@ from websocket import WebSocket
 
 from common import engine, utils, abort
 from common.async_task import AsyncTask
+from granulate import s2s
 from granulate.notification import get, Message
 from common.settings import project_settings
 
@@ -22,9 +23,7 @@ def handle_notification(data: Dict):
     socket = sockets.get(msg.user_id)
     if socket:
         socket.send(json.dumps(msg.to_dict()))
-        # todo: send ack
-    else:
-        logging.info(f"no socket found for user_id: {msg.user_id}")
+        s2s.send_notification(msg.id)
 
 
 @app.route('/websocket')

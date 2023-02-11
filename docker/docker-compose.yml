@@ -4,7 +4,7 @@ services:
     image: mysql:5.7.38
     platform: linux/x86_64
     volumes:
-      - "../mysql_db:/docker-entrypoint-initdb.d"
+      - "../services/common/mysql_db:/docker-entrypoint-initdb.d"
       - mysql-data:/var/lib/mysql
 
     environment:

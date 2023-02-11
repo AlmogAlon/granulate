@@ -10,11 +10,13 @@ CHANNEL = "notification"
 
 @dataclass
 class Message:
+    id: int
     message: str
     user_id: int
 
     def to_dict(self) -> Dict:
         return {
+            "message_id": self.id,
             "message": self.message,
             "user_id": self.user_id,
         }
@@ -22,8 +24,9 @@ class Message:
     @staticmethod
     def from_dict(data: Dict):
         return Message(
-            message=data["message"],
-            user_id=data["user_id"],
+            id=data.get("message_id"),
+            message=data.get("message"),
+            user_id=data.get("user_id"),
         )
 
 

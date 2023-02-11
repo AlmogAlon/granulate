@@ -29,6 +29,7 @@ CREATE TABLE `message` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `uid` int(11) NOT NULL,
   `to_uid` int(11) NOT NULL,
+  `sent` timestamp NULL,
   `message` varchar(255) NOT NULL,
   `room_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
