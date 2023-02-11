@@ -60,7 +60,9 @@ def send_notification():
     except Exception as e:
         logging.error(f"send_notification(): failed sending notification: {e}")
 
-    return {}
+    return {
+        "message_id": message.id,
+    }
 
 
 @app.route("/read", method="POST")
