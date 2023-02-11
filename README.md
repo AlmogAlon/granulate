@@ -1,7 +1,18 @@
 # Backend Assignment
 
-This is a simple RESTFUL API for Chat application. 
-Backend server is written in Python with SQLAlchemy as the DB ORM
+This is a simple RESTful API for Chat application. 
+Backend servers are written in Python using Bottle framework.
+The project built according to the design diagram in `docs` folder.
+
+it uses MySQL (sqlalchemy as ORM) as database, and Redis as cache and message broker.
+
+Project Services are:
+- Notification service
+  - Exposes a RESTFUL API for sending notifications to users.
+  - Stores notifications in a database.
+
+- Socket service
+  - Bottle application for handling websocket connections to communicate with clients.
 
 ## Requirements
 - python3.10
@@ -10,38 +21,38 @@ Backend server is written in Python with SQLAlchemy as the DB ORM
 
 ## Installation
 
-To run the backend locally:
-
-- execute these commands: 
-
-```bash
-  cd granulate
-  python main.py
-```
-
-To run the backend using docker-compose:
+To run the services using docker-compose (recommended):
 - execute these commands: 
 
 ```bash
   cd granulate
   docker build . -f docker/Dockerfile -t chat-app:base
-  docker build . -f docker/app/Dockerfile -t chat-app
+  docker build . -f docker/notification/Dockerfile -t chat-notification
+  docker build . -f docker/socket/Dockerfile -t chat-socket
   docker-compose -f docker/docker-compose.yml up -d
 ```
 
-
-## API Reference
-
-#### Get all messages
+To run the services locally:
+```bash
+  cd granulate/services
+  ./rebuild_env.bat
+```
+- open IDE from the root folder of the service
+- configure python interpreter to use: `granulate/services/venv/bin/python`
 
 ```bash
-  curl --location --request GET '127.0.0.1:1337/chat'
+  cd granulate/services/SERVICE_NAME
+  python main.py
 ```
+
+
+## Notification Service 
+### API Reference
 
 #### Send a new message
 
 ```bash
-  curl --location --request POST '127.0.0.1:1337/chat' \
+  curl --location --request POST '127.0.0.1:1337/api/notification' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "username": "test",
@@ -56,17 +67,19 @@ To run the backend using docker-compose:
 | `message`   | `Str` | **Required** |
 | `room_name` | `Str` | **Optional** |
 
-#### Get rooms
+
+## Test Client tool
+
+connects to the socket service and waits for messages.
+it can also send messages to the socket service.
 
 ```bash
-  curl --location --request GET '127.0.0.1:1337/chat/room/<OPTIONAL_ID>'
+  cd granulate/services/socket
+  python test_client.py
 ```
 
-
-## Client usage
-
 ```bash
-  cd granulate
+  cd granulate/services/tools
   python client.py --username=david --message
 ```
 | Parameter  | Type     | Description                                    |

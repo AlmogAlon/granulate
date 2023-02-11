@@ -4,7 +4,7 @@ services:
     image: mysql:5.7.38
     platform: linux/x86_64
     volumes:
-      - "../mysql_db:/docker-entrypoint-initdb.d"
+      - "../services/common/mysql_db:/docker-entrypoint-initdb.d"
       - mysql-data:/var/lib/mysql
 
     environment:
@@ -14,14 +14,40 @@ services:
     networks:
       - app-network
 
-  chat-app:
-    image: chat-app:latest
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+
+  chat-notification:
+    image: chat-notification
+    ports:
+        - 1338:1338
+    networks:
+        - app-network
+    depends_on:
+        - mysql-db
+        - redis
+        - chat-socket
+    environment:
+      - DB_HOST=mysql-db
+      - REDIS_HOST=redis
+      - WEBSOCKET_HOST=chat-socket
+
+  chat-socket:
+    image: chat-socket:latest
     ports:
       - 1337:1337
     networks:
       - app-network
     environment:
      - DB_HOST=mysql-db
+     - REDIS_HOST=redis
+    depends_on:
+      - mysql-db
+      - redis
 
 networks:
   app-network:

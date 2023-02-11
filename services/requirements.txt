@@ -6,3 +6,9 @@ requests
 python-dotenv
 sqlalchemy
 mysqlclient
+bottle-websocket
+websocket-client
+websockets
+gevent
+gevent-websocket
+redis

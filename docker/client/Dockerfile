@@ -1,3 +1,5 @@
 FROM chat-app:base
 
-ENTRYPOINT ["python", "/reqs/client.py"]
+WORKDIR "/reqs/services/tools"
+
+ENTRYPOINT ["python", "client.py"]

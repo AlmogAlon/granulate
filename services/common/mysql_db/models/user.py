@@ -5,7 +5,8 @@ from typing import Dict
 from sqlalchemy import Column, String
 from sqlalchemy.orm import Session, relationship
 from common.session import Base
-from mysql_db.models.message import Message
+from common.mysql_db.models.message import Message
+from common.mysql_db.models.room import Room
 
 
 class User(Base):
