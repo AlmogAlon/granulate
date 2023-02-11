@@ -2,6 +2,7 @@ import json
 from typing import Any, Optional, Callable, Dict
 import redis
 
+from common.settings import project_settings
 
 CLIENT = None
 
@@ -12,7 +13,8 @@ def get_client():
     if CLIENT:
         return CLIENT
 
-    CLIENT = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
+    settings = project_settings().redis
+    CLIENT = redis.StrictRedis(settings.host, settings.port, charset="utf-8", decode_responses=True)
 
     return CLIENT
 

@@ -11,3 +11,4 @@ websocket-client
 websockets
 gevent
 gevent-websocket
+redis

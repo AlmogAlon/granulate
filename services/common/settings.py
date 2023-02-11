@@ -29,10 +29,17 @@ class Database(object):
 
 
 @dataclass
+class Redis(object):
+    host: str = os.getenv("REDIS_HOST")
+    port: int = os.getenv("REDIS_PORT")
+
+
+@dataclass
 class Settings:
     notification: Notification = Notification()
     websocket: WebSocket = WebSocket()
     database: Database = Database()
+    redis: Redis = Redis()
 
 
 _DEFAULT_PROJECT = "granulate"
