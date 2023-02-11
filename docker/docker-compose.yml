@@ -45,6 +45,7 @@ services:
     environment:
      - DB_HOST=mysql-db
      - REDIS_HOST=redis
+     - NOTIFICATION_HOST=chat-notification
     depends_on:
       - mysql-db
       - redis
